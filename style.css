@@ -65,6 +65,30 @@
         color: #bdc3c7;
     }
 
+/* Mobile header toggle button - hidden on wide screens */
+#mobile-sidebar-toggle {
+    display: none;
+    background: var(--primary-dark);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    #mobile-sidebar-toggle { display: inline-block; }
+    /* ensure the header toggle stays above everything */
+    header { position: relative; z-index: 70; }
+    #mobile-sidebar-toggle { position: relative; }
+}
+
+/* When the sidebar is hidden, make sure header toggle remains visible and prominent */
+.sidebar-hidden #mobile-sidebar-toggle {
+    display: inline-block;
+}
+
     .nav-scroll {
         flex: 1;
         overflow-y: auto;
@@ -726,3 +750,108 @@
     .submit-q-btn:active {
         transform: scale(0.95);
     }
+
+/* Mobile slide-out panel for dropdowns */
+aside#sidebar { position: relative; }
+.dropdown-container.mobile-panel {
+    display: block; /* controlled via .mobile-open */
+    position: absolute;
+    left: 100%;
+    top: 0;
+    height: 100vh;
+    width: 80vw;
+    max-width: 380px;
+    background: var(--bg-card);
+    box-shadow: -6px 0 20px rgba(0,0,0,0.15);
+    z-index: 60;
+    transform: translateX(8px);
+    transition: transform 240ms ease, opacity 200ms ease;
+    overflow-y: auto;
+    padding: 12px 10px;
+}
+.dropdown-container.mobile-panel button {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+}
+.dropdown-container.mobile-panel.mobile-open {
+    transform: translateX(0);
+}
+
+/* Prevent body scroll when panel open */
+.panel-open {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* Hide the sidebar on larger screens when user toggles it off.
+   On small screens we use a transform-based slide to keep child panels renderable. */
+@media (min-width: 901px) {
+    body.sidebar-hidden aside#sidebar,
+    body.sidebar-hidden #sidebar {
+        display: none !important;
+    }
+}
+
+/* Header mobile toggle (ensure visible on small screens) */
+#mobile-sidebar-toggle { display: none; background: var(--primary-dark); color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 1.05rem; cursor: pointer; }
+@media (max-width: 900px) {
+    #mobile-sidebar-toggle { display: inline-block; }
+}
+
+/* Hide sidebar when toggled on small screens */
+@media (max-width: 900px) {
+    /* slide the sidebar off-screen instead of hiding it fully so mobile panels (which are children)
+       can still be rendered and positioned (display:none prevents child fixed positioning) */
+    body.sidebar-hidden aside#sidebar {
+        transform: translateX(-110%);
+        transition: transform 240ms ease;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 90;
+    }
+}
+
+/* Mobile slide-out panel for dropdowns */
+.dropdown-container.mobile-panel {
+    display: block; /* base display; visibility controlled by .mobile-open */
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 78vw;
+    max-width: 420px;
+    background: var(--bg-card);
+    box-shadow: -8px 0 24px rgba(0,0,0,0.15);
+    z-index: 99999 !important; /* ensure panel appears above other layout elements */
+    transform: translateX(120%);
+    transition: transform 240ms ease, opacity 200ms ease;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: auto;
+    padding: 14px 12px;
+}
+.dropdown-container.mobile-panel button { display: block; width: 100%; margin: 8px 0; }
+.dropdown-container.mobile-panel.mobile-open {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Prevent body scroll when a panel is open */
+.panel-open { overflow: hidden !important; height: 100vh !important; }
+
+/* Mobile modal close button styling */
+#mobile-modal .mobile-modal-close {
+    background: var(--primary-dark);
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+#mobile-modal .mobile-modal-close:active { transform: scale(0.98); }

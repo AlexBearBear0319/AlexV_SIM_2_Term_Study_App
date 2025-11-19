@@ -80,34 +80,211 @@ function renderTips() {
 
 // Toggle dropdown menus
 function toggleDropdown(id) {
-    console.log('toggleDropdown called with id:', id);
-    const el = document.getElementById(id);
+    // Mobile-aware dropdown: on small screens open as slide-out panel to the right of sidebar
+    try {
+        console.log('toggleDropdown called with id:', id);
+        const el = document.getElementById(id);
+        if (!el) {
+            console.warn('toggleDropdown: element not found for id', id);
+            return;
+        }
     const subject = id.includes('oodp') ? 'CSIT121' : 'CSIT128';
     const isNotes = id.includes('notes');
-    
-    console.log('Subject:', subject, 'isNotes:', isNotes);
 
     // Populate if empty
     if (el.innerHTML.trim() === "") {
         if (isNotes) {
-            console.log('Populating notes for', subject);
-            notesData[subject].forEach((note, index) => {
+            (notesData[subject] || []).forEach((note, index) => {
                 el.innerHTML += `<button onclick="renderNote('${subject}', ${index})">${note.title}</button>`;
             });
         } else {
-            // Quizzes - count available questions
-            console.log('Populating quizzes for', subject);
-            console.log('quizData[subject]:', quizData[subject]);
-            const totalQuestions = quizData[subject] ? quizData[subject].length : 0;
-            console.log('Total questions:', totalQuestions);
+            const totalQuestions = (quizData[subject] || []).length || 0;
             el.innerHTML += `<button onclick="startQuiz('${subject}', 'all')">⚡ Full Quiz (${totalQuestions} questions)</button>`;
         }
     }
 
-    // Toggle visibility
-    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-    console.log('Dropdown visibility:', el.style.display);
+    const isMobile = window.innerWidth <= 900;
+    console.log('toggleDropdown: isMobile=', isMobile, 'container has children=', el.children.length);
+    if (isMobile) {
+        // Close other mobile panels
+        document.querySelectorAll('.dropdown-container.mobile-panel').forEach(c => {
+            if (c !== el) c.classList.remove('mobile-open');
+        });
+
+        // Mark this container as a mobile panel and open it
+        el.classList.add('mobile-panel');
+        el.classList.toggle('mobile-open');
+
+        // Fallback: detach the panel to document.body so it's not affected by parent overflow/display
+        try {
+            if (el.classList.contains('mobile-open')) {
+                // remember original parent for reattachment
+                if (!el.dataset._originalParent) {
+                    el.dataset._originalParent = '';
+                    try {
+                        const parent = el.parentNode;
+                        if (parent) {
+                            el.dataset._originalParent = '1';
+                            el._originalParent = parent;
+                            el._originalNext = el.nextSibling;
+                        }
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+                // append to body if not already
+                if (el.parentNode !== document.body) document.body.appendChild(el);
+
+                // Try to show panel by creating a modal fallback so CSS can't hide it
+                try {
+                    // remove any existing mobile-modal
+                    const existingModal = document.getElementById('mobile-modal');
+                    if (existingModal) existingModal.remove();
+
+                    const modal = document.createElement('div');
+                    modal.id = 'mobile-modal';
+                    modal.style.position = 'fixed';
+                    modal.style.left = '0';
+                    modal.style.top = '0';
+                    modal.style.right = '0';
+                    modal.style.bottom = '0';
+                    modal.style.zIndex = '100000';
+                    modal.style.display = 'flex';
+                    modal.style.alignItems = 'stretch';
+                    modal.style.justifyContent = 'flex-end';
+
+                    const backdrop = document.createElement('div');
+                    backdrop.style.position = 'absolute';
+                    backdrop.style.left = '0';
+                    backdrop.style.top = '0';
+                    backdrop.style.right = '0';
+                    backdrop.style.bottom = '0';
+                    backdrop.style.background = 'rgba(0,0,0,0.35)';
+                    backdrop.addEventListener('click', () => {
+                        modal.remove();
+                        document.body.classList.remove('panel-open');
+                        el.classList.remove('mobile-open');
+                    });
+
+                    const panelWrap = document.createElement('div');
+                    panelWrap.style.position = 'relative';
+                    panelWrap.style.width = '78vw';
+                    panelWrap.style.maxWidth = '420px';
+                    panelWrap.style.height = '100%';
+                    panelWrap.style.background = 'var(--bg-card)';
+                    panelWrap.style.boxShadow = '-8px 0 24px rgba(0,0,0,0.15)';
+                    panelWrap.style.overflowY = 'auto';
+                    panelWrap.style.padding = '12px';
+
+                    // close button (styled to not cover content)
+                    const closeBtn = document.createElement('button');
+                    closeBtn.innerText = '✕';
+                    closeBtn.className = 'mobile-modal-close';
+                    closeBtn.setAttribute('aria-label', 'Close');
+                    closeBtn.style.position = 'absolute';
+                    closeBtn.style.right = '12px';
+                    closeBtn.style.top = '12px';
+                    closeBtn.style.zIndex = '100001';
+                    closeBtn.style.padding = '6px 10px';
+                    closeBtn.style.fontSize = '0.95rem';
+                    closeBtn.style.borderRadius = '6px';
+                    closeBtn.style.background = 'var(--primary-dark)';
+                    closeBtn.style.color = '#fff';
+                    closeBtn.style.border = 'none';
+                    closeBtn.style.cursor = 'pointer';
+                    closeBtn.addEventListener('click', () => {
+                        modal.remove();
+                        document.body.classList.remove('panel-open');
+                        el.classList.remove('mobile-open');
+                    });
+
+                    // copy the inner content of the dropdown into the modal
+                    // ensure content doesn't sit under the close button
+                    panelWrap.style.paddingTop = '56px';
+                    panelWrap.innerHTML = el.innerHTML;
+                    panelWrap.prepend(closeBtn);
+
+                    modal.appendChild(backdrop);
+                    modal.appendChild(panelWrap);
+                    document.body.appendChild(modal);
+
+                    console.log('toggleDropdown: mobile-modal created');
+                } catch (e) {
+                    console.warn('toggleDropdown: modal fallback failed', e);
+                }
+            } else {
+                // closing: reattach if we moved it
+                try {
+                    const overlay = document.getElementById('mobile-panel-overlay');
+                    if (overlay) overlay.remove();
+
+                    if (el._originalParent) {
+                        if (el._originalNext && el._originalNext.parentNode === el._originalParent) {
+                            el._originalParent.insertBefore(el, el._originalNext);
+                        } else {
+                            el._originalParent.appendChild(el);
+                        }
+                    }
+
+                    // remove inline styles we forced
+                    el.style.position = '';
+                    el.style.right = '';
+                    el.style.top = '';
+                    el.style.height = '';
+                    el.style.width = '';
+                    el.style.maxWidth = '';
+                    el.style.zIndex = '';
+                    el.style.transform = '';
+                    el.style.opacity = '';
+                    el.style.visibility = '';
+                    el.style.background = '';
+                    el.style.boxShadow = '';
+                    el.style.padding = '';
+                } catch (err) {
+                    console.warn('toggleDropdown: detach/reattach fallback failed', err);
+                }
+            }
+        } catch (err) {
+            console.warn('toggleDropdown: detach/reattach fallback failed', err);
+        }
+
+        // Prevent body scroll while panel open
+        if (el.classList.contains('mobile-open')) {
+            document.body.classList.add('panel-open');
+            console.log('toggleDropdown: opened mobile panel for', id);
+        } else {
+            document.body.classList.remove('panel-open');
+            console.log('toggleDropdown: closed mobile panel for', id);
+        }
+    } else {
+        // Desktop behaviour: simple toggle
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+    } catch (err) {
+        console.error('toggleDropdown error for id', id, err);
+    }
 }
+
+// Toggle sidebar visibility (used by hamburger on mobile)
+function toggleSidebar() {
+    document.body.classList.toggle('sidebar-hidden');
+}
+
+// Close mobile panels when clicking outside
+document.addEventListener('click', function(ev) {
+    const isMobile = window.innerWidth <= 900;
+    if (!isMobile) return;
+    const openPanel = document.querySelector('.dropdown-container.mobile-panel.mobile-open');
+    if (!openPanel) return;
+    const withinPanel = openPanel.contains(ev.target);
+    const isToggleBtn = ev.target.closest('.dropdown-btn');
+    console.log('document.click: isToggleBtn=', !!isToggleBtn, 'withinPanel=', withinPanel);
+    if (!withinPanel && !isToggleBtn) {
+        console.log('document.click: closing openPanel');
+        openPanel.classList.remove('mobile-open');
+        document.body.classList.remove('panel-open');
+    }
+});
 
 // Render detailed notes
 function renderNote(subject, index) {
