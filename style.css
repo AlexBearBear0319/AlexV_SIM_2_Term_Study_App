@@ -799,6 +799,84 @@ aside#sidebar { position: relative; }
     #mobile-sidebar-toggle { display: inline-block; }
 }
 
+/* =========================================
+   RESULTS MODAL STYLES
+   ========================================= */
+#results-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+    z-index: 120000;
+    padding: 20px;
+}
+
+#results-modal .results-panel {
+    width: min(980px, 100%);
+    max-height: 86vh;
+    overflow: auto;
+    background: var(--bg-card);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    padding: 18px 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+#results-modal .results-panel header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+#results-modal h3 { margin: 0; font-size: 1.15rem; color: var(--primary-dark); }
+
+#results-modal .results-panel .intro { color: var(--text-light); margin-top: 6px; }
+
+#results-modal .results-list { margin-top: 12px; display: grid; gap: 10px; }
+
+#results-modal .results-list .question-item {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+    background: linear-gradient(180deg, rgba(250,250,250,0.6), rgba(245,245,246,0.6));
+}
+
+#results-modal .question-item .q-title { font-weight: 600; margin-bottom: 8px; color: var(--primary-dark); }
+
+#results-modal .question-item .meta { font-size: 0.95rem; color: var(--text-light); margin-bottom: 6px; }
+
+#results-modal .question-item b { color: var(--primary-dark); }
+
+/* Buttons in modal footer */
+#results-modal .results-panel .modal-footer { display:flex; gap:10px; justify-content: flex-end; margin-top: 12px; }
+
+/* Ensure mobile friendliness */
+@media (max-width: 640px) {
+    #results-modal { padding: 12px; }
+    #results-modal .results-panel { padding: 12px; }
+    #results-modal .question-item { padding: 10px; }
+}
+
+/* Results page (non-modal) styles - used by showResults() */
+.results-summary { max-width: 700px; margin: 0 auto; }
+.results-card { text-align: center; padding: 40px; }
+.results-score { font-size: 4rem; font-weight: bold; margin: 20px 0; }
+.results-meta { font-size: 1.6rem; margin-bottom: 6px; }
+.results-grade { font-size: 1.5rem; margin: 20px 0; font-weight: bold; }
+.performance-breakdown { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px; }
+.performance-row { display:flex; justify-content: space-between; margin: 10px 0; }
+.results-actions { margin-top: 30px; display:flex; gap:10px; justify-content:center; }
+
+@media (max-width: 640px) {
+    .results-card { padding: 20px; }
+    .results-score { font-size: 3rem; }
+}
+
+
 /* Hide sidebar when toggled on small screens */
 @media (max-width: 900px) {
     /* slide the sidebar off-screen instead of hiding it fully so mobile panels (which are children)
@@ -855,3 +933,22 @@ aside#sidebar { position: relative; }
 }
 
 #mobile-modal .mobile-modal-close:active { transform: scale(0.98); }
+
+/* Results modal styling */
+#results-modal {
+    /* container covers screen; panel is centered by JS */
+}
+
+#results-modal > div {
+    /* backdrop rules handled inline; panel styling done inline too for safety */
+}
+
+.results-list div b { font-weight: 700; }
+
+/* Small tweaks for the results list on very small screens */
+@media (max-width: 480px) {
+    #results-modal div[style] {
+        padding: 14px !important;
+    }
+    .results-list div { font-size: 0.95rem; }
+}

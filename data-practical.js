@@ -309,6 +309,30 @@ publisher.subscribe(bob)
 publisher.notify("Python 3.13 Released!")
 publisher.unsubscribe(bob)
 publisher.notify("New AI Features Added")`
+        },
+        {
+            title: "Task 4: Shape Math (Exam Tip)",
+            desc: "Create a `Cylinder` class with `radius` and `height`. Import `math`. Add a method `get_volume()` (πr²h) and ensure radius is always positive using a property.",
+            code: `import math
+
+class Cylinder:
+    def __init__(self, radius, height):
+        self.radius = radius  # Calls setter
+        self.height = height
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("Radius must be positive")
+        self._radius = value
+
+    def get_volume(self):
+        # Volume = π * r^2 * h
+        return math.pi * (self._radius ** 2) * self.height`
         }
     ],
 

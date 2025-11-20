@@ -248,12 +248,19 @@ c.area = 100   # AttributeError!</pre>
 def score(self):
     print("Deleting score")
     del self._score</pre>
-            `
+            
+    <h4>5. Theory: Why Encapsulation?</h4>
+                <ul>
+                    <li><b>Security:</b> Prevents external code from accidentally breaking the object's internal state.</li>
+                    <li><b>Flexibility:</b> You can change the internal implementation without breaking external code.</li>
+                    <li><b>Validation:</b> Setters allow you to check data (e.g., <code>age &gt; 0</code>) before assigning it.</li>
+                </ul>
+    `
         },
-        {
-            title: "L8: File I/O & Serialization",
-            summary: "Reading, writing, and persisting data to files.",
-            content: `
+    {
+        title: "L8: File I/O & Serialization",
+        summary: "Reading, writing, and persisting data to files.",
+        content: `
                 <h4>1. Opening Files</h4>
                 <p>Modes: <code>'r'</code> read, <code>'w'</code> write (overwrites), <code>'a'</code> append, <code>'r+'</code> read/write.</p>
                 <pre>f = open("file.txt", "r")
@@ -304,9 +311,9 @@ with open("data.json", "r") as f:
     loaded = json.load(f)</pre>
             `
         },
-        {
-            title: "L9: Regular Expressions (Python)",
-            summary: "Pattern matching strings using the 're' module.",
+{
+    title: "L9: Regular Expressions (Python)",
+        summary: "Pattern matching strings using the 're' module.",
             content: `
                 <h4>1. The <code>re</code> Module</h4>
                 <pre>import re</pre>
@@ -343,10 +350,10 @@ if match:
     print("Found:", match.group())  # test@email.com
                 </pre>
             `
-        },
-        {
-            title: "L10: Matplotlib Visualization",
-            summary: "Creating graphs and visualizations for data analysis.",
+},
+{
+    title: "L10: Matplotlib Visualization",
+        summary: "Creating graphs and visualizations for data analysis.",
             content: `
                 <h4>1. Basic Setup</h4>
                 <p>Import using <code>import matplotlib.pyplot as plt</code>.</p>
@@ -390,10 +397,10 @@ plt.show()</pre>
                     <li><code>linewidth</code>: Thickness of line.</li>
                 </ul>
             `
-        },
-        {
-            title: "L11: Design Patterns",
-            summary: "Standard solutions to common software architecture problems.",
+},
+{
+    title: "L11: Design Patterns",
+        summary: "Standard solutions to common software architecture problems.",
             content: `
                 <h4>1. Singleton Pattern</h4>
                 <p>Ensures a class has only <b>ONE</b> instance (e.g., Database Connection, Logger).</p>
@@ -458,14 +465,50 @@ for i in Counter(5):
         elif animal_type == "cat":
             return Cat()</pre>
             `
-        }
+},
+{
+    title: "UML Relationships: Association, Aggregation, Composition",
+        summary: "Understanding how objects interact beyond just Inheritance (The 'Has-A' relationships).",
+            content: `
+                <h4>1. Association (Uses-A)</h4>
+                <p>Two classes work together but don't depend on each other. No special owner.</p>
+                <pre>class Student:
+    def learn(self, book):
+        print(f"Studying {book.title}")</pre>
+                
+                <h4>2. Aggregation (Has-A, Weak)</h4>
+                <p><b>Symbol:</b> Hollow Diamond &#9671;</p>
+                <p>The parent "has" the child, but the child <b>can exist independently</b>. If the parent is deleted, the child lives on.</p>
+                <pre>class Department:
+    def __init__(self, employees):
+        self.employees = employees # Employees created OUTSIDE
+
+# If Department is deleted, Employees still exist.</pre>
+
+                <h4>3. Composition (Has-A, Strong)</h4>
+                <p><b>Symbol:</b> Filled Diamond &#9670;</p>
+                <p>The parent "owns" the child. The child <b>cannot exist</b> without the parent. If parent dies, child dies.</p>
+                <pre>class Car:
+    def __init__(self):
+        self.engine = Engine() # Engine created INSIDE
+
+# If Car is deleted, Engine is also deleted.</pre>
+
+                <h4>4. Implementation in Python</h4>
+                <p>Usually done in <code>__init__</code>:</p>
+                <ul>
+                    <li><b>Aggregation:</b> Pass the object in as an argument.</li>
+                    <li><b>Composition:</b> Create the object inside the constructor.</li>
+                </ul>
+            `
+}
     ],
 
-    "CSIT128": [
-        {
-            title: "L1 & L2: HTML & CSS Basics",
-            summary: "Foundational tags, table structures, and styling rules.",
-            content: `
+"CSIT128": [
+    {
+        title: "L1 & L2: HTML & CSS Basics",
+        summary: "Foundational tags, table structures, and styling rules.",
+        content: `
                 <h4>1. HTML Structure</h4>
                 <p>Root is <code>&lt;html&gt;</code>. Metadata goes in <code>&lt;head&gt;</code>. Content goes in <code>&lt;body&gt;</code>.</p>
                 
@@ -492,11 +535,11 @@ for i in Counter(5):
                     <li><b>Direct Child:</b> <code>div > p { ... }</code> (Only direct children)</li>
                 </ul>
             `
-        },
-        {
-            title: "CSS Priority (Specificity)",
-            summary: "Determining which style rule wins when multiple rules apply.",
-            content: `
+    },
+    {
+        title: "CSS Priority (Specificity)",
+        summary: "Determining which style rule wins when multiple rules apply.",
+        content: `
                 <h4>1. The Hierarchy (Highest to Lowest)</h4>
                 <ol>
                     <li><b>Inline Style</b> (e.g., <code>style="color:red"</code>) - <b>Highest Priority</b></li>
@@ -524,11 +567,11 @@ for i in Counter(5):
                 <p>Overrides <b>everything</b>, even inline styles. Use sparingly.</p>
                 <pre>p { color: red !important; }</pre>
             `
-        },
-        {
-            title: "L3: HTML Forms",
-            summary: "Collecting and submitting user input using various form elements.",
-            content: `
+    },
+    {
+        title: "L3: HTML Forms",
+        summary: "Collecting and submitting user input using various form elements.",
+        content: `
                 <h4>1. The <code>&lt;form&gt;</code> Tag</h4>
                 <p>Main attributes:</p>
                 <ul>
@@ -580,11 +623,11 @@ Default text here
                     <li><code>pattern</code>: Regex validation pattern.</li>
                 </ul>
             `
-        },
-        {
-            title: "L4: CSS Fundamentals",
-            summary: "Styling HTML elements with selectors, properties, and the box model.",
-            content: `
+    },
+    {
+        title: "L4: CSS Fundamentals",
+        summary: "Styling HTML elements with selectors, properties, and the box model.",
+        content: `
                 <h4>1. CSS Selectors</h4>
                 <ul>
                     <li><b>Tag:</b> <code>p { color: blue; }</code> - Selects all &lt;p&gt; tags.</li>
@@ -630,11 +673,11 @@ Default text here
                     <li><code>fixed</code>: Relative to viewport (stays on screen when scrolling).</li>
                 </ul>
             `
-        },
-        {
-            title: "L5: JavaScript Validation & Regex",
-            summary: "Checking data on client side before sending to server using regular expressions.",
-            content: `
+    },
+    {
+        title: "L5: JavaScript Validation & Regex",
+        summary: "Checking data on client side before sending to server using regular expressions.",
+        content: `
                 <h4>1. Form Validation Basics</h4>
                 <pre>&lt;form onsubmit="return validateForm()"&gt;
     &lt;input type="text" id="username"&gt;
@@ -698,11 +741,11 @@ function validateForm() {
                     <li><code>replace()</code>: Replaces matched pattern with string.</li>
                 </ul>
             `
-        },
-        {
-            title: "L6: Events & DOM Manipulation",
-            summary: "Making pages interactive using the Document Object Model and event handlers.",
-            content: `
+    },
+    {
+        title: "L6: Events & DOM Manipulation",
+        summary: "Making pages interactive using the Document Object Model and event handlers.",
+        content: `
                 <h4>1. Accessing DOM Elements</h4>
                 <pre>// By ID (most common)
 let element = document.getElementById("myId");
@@ -787,11 +830,11 @@ document.body.appendChild(newDiv);
 element.remove();  // Modern way
 parent.removeChild(element);  // Old way</pre>
             `
-        },
-        {
-            title: "L7: XML, DTD & XSD",
-            summary: "Structuring and validating data using XML and schema definitions.",
-            content: `
+    },
+    {
+        title: "L7: XML, DTD & XSD",
+        summary: "Structuring and validating data using XML and schema definitions.",
+        content: `
                 <h4>1. XML Rules (CRITICAL!)</h4>
                 <ul>
                     <li>Must have exactly <b>one root element</b>.</li>
@@ -865,11 +908,11 @@ parent.removeChild(element);  // Old way</pre>
                     <li><code>xs:date</code> : Date (YYYY-MM-DD)</li>
                 </ul>
             `
-        },
-        {
-            title: "L8: XSLT Transformations",
-            summary: "Transforming XML data into HTML or other formats for display.",
-            content: `
+    },
+    {
+        title: "L8: XSLT Transformations",
+        summary: "Transforming XML data into HTML or other formats for display.",
+        content: `
                 <h4>1. What is XSLT?</h4>
                 <p><b>XSL Transformations</b> converts XML to HTML, text, or other XML formats.</p>
 
@@ -938,11 +981,11 @@ parent.removeChild(element);  // Old way</pre>
     &lt;/xsl:if&gt;
 &lt;/xsl:for-each&gt;</pre>
             `
-        },
-        {
-            title: "L9: JSON & AJAX",
-            summary: "Asynchronous data exchange and JSON format for modern web applications.",
-            content: `
+    },
+    {
+        title: "L9: JSON & AJAX",
+        summary: "Asynchronous data exchange and JSON format for modern web applications.",
+        content: `
                 <h4>1. JSON Format</h4>
                 <p><b>JavaScript Object Notation</b> - lightweight data format.</p>
                 <p><b>Rules:</b></p>
@@ -1021,11 +1064,11 @@ console.log(parsed.name);  // "Alice"</pre>
                     <li><b>500:</b> Internal Server Error</li>
                 </ul>
             `
-        },
-        {
-            title: "L10: HTML5 Canvas & Drag-Drop",
-            summary: "Advanced graphics rendering and interactive drag-and-drop functionality.",
-            content: `
+    },
+    {
+        title: "L10: HTML5 Canvas & Drag-Drop",
+        summary: "Advanced graphics rendering and interactive drag-and-drop functionality.",
+        content: `
                 <h4>1. Canvas Setup</h4>
                 <pre>&lt;canvas id="myCanvas" width="500" height="400"&gt;&lt;/canvas&gt;
 
@@ -1099,6 +1142,6 @@ function drop(ev) {
                     <li><code>clearData()</code> : Clear stored data.</li>
                 </ul>
             `
-        }
-    ]
+    }
+]
 };

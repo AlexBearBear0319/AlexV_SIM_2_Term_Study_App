@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Hee Siang Tips — CSIT121</title>
+	<link rel="stylesheet" href="style.css">
+	<style>
+		:root{--card-bg:#fff;--muted:#d0d6dc;--accent-py:#2b7abf}
+		body{background:#f4f6f8;color:#122;font-family:Segoe UI, Roboto, Arial, sans-serif}
+		.tips-container{max-width:980px;margin:18px auto;padding:18px}
+		.qa{border:1px solid var(--muted);padding:14px;margin:12px 0;border-radius:6px;background:var(--card-bg)}
+		.qa pre{background:#fbfdff;padding:10px;border-radius:4px;overflow:auto}
+		.answer{margin-top:10px;padding:12px;background:#eef7ff;border-radius:4px;display:none}
+		.ctrls{display:flex;gap:8px;justify-content:flex-end;margin-bottom:8px}
+		.show-btn{cursor:pointer;padding:6px 10px;border-radius:4px;border:1px solid var(--muted);background:var(--accent-py);color:#fff}
+		.secondary{background:#fff;color:#122;border:1px solid #cfd6db;padding:6px 10px;border-radius:4px;text-decoration:none}
+		header h1{margin:0}
+		h2{margin-top:0}
+	</style>
+</head>
+<body>
+	<main class="tips-container">
+		<header style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px">
+			<div>
+				<h1>Hee Siang — CSIT121 Tips</h1>
+				<p style="margin:6px 0 0">Focused tips for exam format and practice questions. Use the buttons to reveal answers.</p>
+			</div>
+			<div style="display:flex;gap:8px">
+				<a href="index.html" class="secondary">Back to App</a>
+				<button id="showAll" class="show-btn">Show all answers</button>
+				<button id="hideAll" class="show-btn">Hide all answers</button>
+			</div>
+		</header>
+
+		<section aria-labelledby="tips-heading">
+			<h2 id="tips-heading">Key Tips (Hee Siang)</h2>
+			<ul>
+				<li><b>Read questions fully:</b> Follow the exam format exactly — if they ask for line numbers, return line numbers only.</li>
+				<li><b>Underline variables & function names:</b> This prevents misreading similarly named symbols.</li>
+				<li><b>Trace for 2–3 steps:</b> For output questions, track variables manually before choosing final output.</li>
+				<li><b>Plan functions:</b> Write signatures and simple comments before coding.</li>
+				<li><b>Edge cases:</b> Consider empty inputs, zero, negatives and duplicates — mention them in your answer if relevant.</li>
+				<li><b>Time split:</b> 5–10 min reading, 10–20 min coding, 5–10 min review per long question.</li>
+			</ul>
+		</section>
+
+		<section aria-labelledby="friend-heading" style="margin-top:18px">
+			<h2 id="friend-heading">Friend's tip — "Try to follow the exam format"</h2>
+			<p>Below are four example question types your friend described, with model answers in the exact formats markers expect.</p>
+		</section>
+
+		<section aria-labelledby="examples-heading" style="margin-top:18px">
+			<h2 id="examples-heading">Example Questions (Practice)</h2>
+			<div class="ctrls">
+				<button id="toggleAll" class="show-btn">Toggle all answers</button>
+			</div>
+
+			<!-- Friend-format 1: Full code -> label lines by concept -->
+			<article class="qa" id="f1">
+				<h3>Type 1 — Identify concepts by line (Encapsulation / Overriding / Polymorphism)</h3>
+				<div class="prompt">
+					<pre><code>1 class Animal:
+2     def __init__(self, name):
+3         self._name = name        # private-ish (encapsulation)
+4     def speak(self):
+5         return "..."
+
+6 class Dog(Animal):
+7     def speak(self):            # method overriding
+8         return "woof"
+
+9 def call_speak(obj):
+10     return obj.speak()        # polymorphism
+
+11 d = Dog('Rex')
+12 print(call_speak(d))</code></pre>
+				</div>
+				<p><b>Expected answer format:</b> Line X: Concept; Line Y: Concept; ...</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer">
+					<b>Answer:</b>
+					<ul>
+						<li>Line 3: Encapsulation (protected/private attribute <code>_name</code>)</li>
+						<li>Line 7: Method overriding (Dog defines its own <code>speak</code>)</li>
+						<li>Line 10: Polymorphism (call_speak works with any object implementing <code>speak</code>)</li>
+					</ul>
+					<b>Marker note:</b> Provide line numbers and a short concept name.
+				</div>
+			</article>
+
+			<!-- Friend-format 2: Theory questions -->
+			<article class="qa" id="f2">
+				<h3>Type 2 — Short theory (multiple parts)</h3>
+				<div class="prompt">
+					<ol>
+						<li>What is encapsulation good for?</li>
+						<li>Which is better for Python persistence: JSON or pickle? Give one-sentence justification.</li>
+						<li>What do these methods do: <code>__init__</code>, <code>__repr__</code>, <code>__str__</code>?</li>
+					</ol>
+				</div>
+				<p><b>Expected answer format:</b> (1) Short sentence. (2) Choice + reason. (3) 3 short descriptions.</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer">
+					<b>Answer:</b>
+					<ol>
+						<li>Encapsulation groups related data and behaviour and protects internal state, making code easier to maintain.</li>
+						<li>JSON is better for portability and readability; pickle is suitable for complex Python objects but is unsafe with untrusted data.</li>
+						<li><code>__init__</code>: constructor; <code>__repr__</code>: developer-facing representation (for debugging); <code>__str__</code>: user-facing readable string.</li>
+					</ol>
+				</div>
+			</article>
+
+			<!-- Friend-format 3: Shape/object coding -->
+			<article class="qa" id="f3">
+				<h3>Type 3 — Shape class (dimensions + math)</h3>
+				<div class="prompt">
+					<p>Define a class <code>Circle</code> that takes radius in the constructor and provides <code>area()</code> and <code>perimeter()</code>. Use <code>math.pi</code>.</p>
+				</div>
+				<p><b>Expected answer format:</b> short code snippet</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer">
+					<pre><code>import math
+
+class Circle:
+		def __init__(self, r):
+				self.r = r
+		def area(self):
+				return math.pi * self.r * self.r
+		def perimeter(self):
+				return 2 * math.pi * self.r</code></pre>
+					<b>Notes:</b> Use <code>math.pi</code> and validate radius if required.
+				</div>
+			</article>
+
+			<!-- Friend-format 4: Small system design (classes) -->
+			<article class="qa" id="f4">
+				<h3>Type 4 — Small program design (classes)</h3>
+				<div class="prompt">
+					<p>A company wants a simple inventory system with <code>Product</code> and <code>Inventory</code>. Show class definitions with add/remove and list operations.</p>
+				</div>
+				<p><b>Expected answer format:</b> class skeletons with methods</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer">
+					<pre><code>class Product:
+		def __init__(self, sku, name, qty=0):
+				self.sku = sku
+				self.name = name
+				self.qty = qty
+
+class Inventory:
+		def __init__(self):
+				self.items = {}
+		def add(self, product, amount):
+				self.items.setdefault(product.sku, product)
+				self.items[product.sku].qty += amount
+		def remove(self, sku, amount):
+				if sku in self.items and self.items[sku].qty >= amount:
+						self.items[sku].qty -= amount
+		def list_items(self):
+				return [(p.sku, p.name, p.qty) for p in self.items.values()]
+</code></pre>
+					<b>Notes:</b> Mention edge checks (negative amounts, non-existent SKU) in answers.
+				</div>
+			</article>
+
+			<!-- Existing practice questions -->
+			<article class="qa" id="q1">
+				<h3>Q1 — Find the Error (short)</h3>
+				<div class="prompt"><pre><code>def add_items(lst)
+		total = 0
+		for i in lst:
+				total += i
+		return total</code></pre></div>
+				<p><b>Expected answer format:</b> Line X (e.g. <code>Line 1</code>)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> Line 1 — missing colon. Fix: <code>def add_items(lst):</code></div>
+			</article>
+
+			<article class="qa" id="q2">
+				<h3>Q2 — Output Tracing</h3>
+				<div class="prompt"><pre><code>class A:
+		def __init__(self, x):
+				self.x = x
+		def inc(self):
+				self.x += 1
+
+a = A(2)
+b = a
+b.inc()
+print(a.x)</code></pre></div>
+				<p><b>Expected answer format:</b> exact output value(s) (e.g. <code>3</code>)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> <code>3</code> — <code>a</code> and <code>b</code> reference the same object.</div>
+			</article>
+
+			<article class="qa" id="q3">
+				<h3>Q3 — Short coding (outline)</h3>
+				<div class="prompt"><p>Outline a function that checks whether two lists contain the same elements (order not important).</p></div>
+				<p><b>Expected answer format:</b> short code snippet or one-line description</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><pre><code>from collections import Counter
+
+def same_elements(a, b):
+		return Counter(a) == Counter(b)</code></pre></div>
+			</article>
+
+			<article class="qa" id="q4">
+				<h3>Q4 — Class Relationship (short)</h3>
+				<div class="prompt"><p>Given classes <code>Car</code> and <code>Engine</code>, identify whether composition or aggregation is appropriate and state why.</p></div>
+				<p><b>Expected answer format:</b> one-line</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> Composition — <code>Engine</code> is part of <code>Car</code>; Car owns Engine lifecycle.</div>
+			</article>
+
+			<article class="qa" id="q5">
+				<h3>Q5 — Edge Case (short)</h3>
+				<div class="prompt"><pre><code>def first_item(lst):
+		return lst[0]</code></pre></div>
+				<p><b>Expected answer format:</b> describe problem and fix briefly</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer">Raises IndexError for empty list. Fix: check <code>if not lst:</code> then handle.</div>
+			</article>
+
+			<article class="qa" id="q6">
+				<h3>Q6 — Magic Method (short)</h3>
+				<div class="prompt"><p>Which magic method is used to provide a developer-friendly representation of an object?</p></div>
+				<p><b>Expected answer format:</b> method name (e.g. <code>__repr__</code>)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> <code>__repr__</code> — developer-facing; <code>__str__</code> is user-facing.</div>
+			</article>
+
+		</section>
+
+		<!-- Additional UOW-style MCQs and Long Coding examples -->
+		<section aria-labelledby="uow-extended" style="margin-top:18px">
+			<h2 id="uow-extended">UOW Extended Practice — MCQ & Long Coding</h2>
+
+			<h3 style="margin-top:8px">Multiple Choice Questions (MCQ)</h3>
+
+			<article class="qa" id="mcq1">
+				<h4>MCQ1 (1 mark)</h4>
+				<div class="prompt">
+					<p>Which of the following is the correct way to open a file for reading in Python?</p>
+					<ol type="A">
+						<li><code>open('data.txt', 'r')</code></li>
+						<li><code>open('data.txt', 'w')</code></li>
+						<li><code>open('data.txt', 'x')</code></li>
+						<li><code>open('data.txt', 'a')</code></li>
+					</ol>
+				</div>
+				<p><b>Expected answer format:</b> Single letter (A/B/C/D)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> A — <code>'r'</code> opens the file for reading.</div>
+			</article>
+
+			<article class="qa" id="mcq2">
+				<h4>MCQ2 (1 mark)</h4>
+				<div class="prompt">
+					<p>Which magic method is used to implement the behaviour of the + operator for objects?</p>
+					<ol type="A">
+						<li><code>__add__</code></li>
+						<li><code>__str__</code></li>
+						<li><code>__init__</code></li>
+						<li><code>__repr__</code></li>
+					</ol>
+				</div>
+				<p><b>Expected answer format:</b> Single letter (A/B/C/D)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> A — <code>__add__</code> implements <code>+</code> semantics.</div>
+			</article>
+
+			<article class="qa" id="mcq3">
+				<h4>MCQ3 (1 mark)</h4>
+				<div class="prompt">
+					<p>Which JSON feature is important to remember when exchanging data with JavaScript?</p>
+					<ol type="A">
+						<li>JSON allows single quotes for strings</li>
+						<li>JSON requires double quotes for keys and string values</li>
+						<li>JSON supports Python tuples natively</li>
+						<li>JSON preserves Python object identity</li>
+					</ol>
+				</div>
+				<p><b>Expected answer format:</b> Single letter (A/B/C/D)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> B — JSON requires double quotes for keys and strings.</div>
+			</article>
+
+			<article class="qa" id="mcq4">
+				<h4>MCQ4 (1 mark)</h4>
+				<div class="prompt">
+					<p>What is the time complexity of looking up a key in a Python dictionary on average?</p>
+					<ol type="A">
+						<li>O(1)</li>
+						<li>O(log n)</li>
+						<li>O(n)</li>
+						<li>O(n log n)</li>
+					</ol>
+				</div>
+				<p><b>Expected answer format:</b> Single letter (A/B/C/D)</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><b>Answer:</b> A — average-case O(1) for dictionary key lookup.</div>
+			</article>
+
+			<h3 style="margin-top:12px">Long Coding Questions</h3>
+
+			<article class="qa" id="lc1">
+				<h4>LC1 (10 marks)</h4>
+				<div class="prompt">
+					<p>Write a function <code>count_words(filename)</code> that reads a text file and returns a dictionary mapping words (lowercased, punctuation removed) to their counts.</p>
+				</div>
+				<p><b>Expected answer format:</b> function code</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><pre><code>import re
+
+def count_words(filename):
+		counts = {}
+		with open(filename,'r',encoding='utf-8') as f:
+				for line in f:
+						words = re.findall(r"[A-Za-z0-9]+", line.lower())
+						for w in words:
+								counts[w] = counts.get(w,0) + 1
+		return counts</code></pre>
+				</div>
+			</article>
+
+			<article class="qa" id="lc2">
+				<h4>LC2 (12 marks)</h4>
+				<div class="prompt">
+					<p>Implement a simple stack class <code>Stack</code> with <code>push</code>, <code>pop</code> and <code>peek</code>, and show how to use it to reverse a list.</p>
+				</div>
+				<p><b>Expected answer format:</b> class code + short usage example</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><pre><code>class Stack:
+		def __init__(self):
+				self._data = []
+		def push(self, v):
+				self._data.append(v)
+		def pop(self):
+				return self._data.pop() if self._data else None
+		def peek(self):
+				return self._data[-1] if self._data else None
+
+# Usage
+s = Stack()
+for x in [1,2,3]: s.push(x)
+rev = []
+while s.peek() is not None:
+		rev.append(s.pop())</code></pre>
+				</div>
+			</article>
+
+			<article class="qa" id="lc3">
+				<h4>LC3 (12 marks)</h4>
+				<div class="prompt">
+					<p>Write classes to model a <code>Student</code> with <code>name</code> and <code>grades</code> list, and a method <code>average()</code>. Also write a function to return the top N students by average.</p>
+				</div>
+				<p><b>Expected answer format:</b> class + function code</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><pre><code>class Student:
+		def __init__(self, name, grades=None):
+				self.name = name
+				self.grades = grades or []
+		def average(self):
+				return sum(self.grades)/len(self.grades) if self.grades else 0
+
+def top_n(students, n):
+		return sorted(students, key=lambda s: s.average(), reverse=True)[:n]</code></pre>
+				</div>
+			</article>
+
+			<article class="qa" id="lc4">
+				<h4>LC4 (15 marks)</h4>
+				<div class="prompt">
+					<p>Design classes for a <code>BankAccount</code> (balance, deposit, withdraw) and a <code>Bank</code> managing multiple accounts (create, transfer). Include simple error checks.</p>
+				</div>
+				<p><b>Expected answer format:</b> class code with methods and brief explanation</p>
+				<button class="show-answer-btn show-btn">Show answer</button>
+				<div class="answer"><pre><code>class BankAccount:
+		def __init__(self, owner, balance=0):
+				self.owner = owner
+				self.balance = balance
+		def deposit(self, amount):
+				if amount>0: self.balance += amount
+		def withdraw(self, amount):
+				if 0<amount<=self.balance:
+						self.balance -= amount
+						return amount
+				raise ValueError('Insufficient funds')
+
+class Bank:
+		def __init__(self):
+				self.accounts = {}
+		def create(self, acct_no, owner, balance=0):
+				self.accounts[acct_no] = BankAccount(owner, balance)
+		def transfer(self, from_acct, to_acct, amount):
+				if from_acct in self.accounts and to_acct in self.accounts:
+						self.accounts[from_acct].withdraw(amount)
+						self.accounts[to_acct].deposit(amount)</code></pre>
+				</div>
+			</article>
+
+		</section>
+
+		<footer style="margin-top:18px">
+			<p>Want more examples or different formats (MCQ / long coding)? Tell me which topics and I'll add them.</p>
+		</footer>
+	</main>
+
+	<script>
+		// Toggle individual answers
+		document.querySelectorAll('.show-answer-btn').forEach(function(btn){
+			btn.addEventListener('click', function(){
+				var answer = btn.nextElementSibling;
+				if(!answer) return;
+				var isShown = answer.style.display === 'block';
+				answer.style.display = isShown ? 'none' : 'block';
+				btn.textContent = isShown ? 'Show answer' : 'Hide answer';
+			});
+		});
+
+		// Controls: toggleAll, showAll, hideAll
+		var toggleAll = document.getElementById('toggleAll');
+		var showAll = document.getElementById('showAll');
+		var hideAll = document.getElementById('hideAll');
+
+		function setAll(show){
+			document.querySelectorAll('.answer').forEach(function(a){ a.style.display = show ? 'block' : 'none'; });
+			document.querySelectorAll('.show-answer-btn').forEach(function(b){ b.textContent = show ? 'Hide answer' : 'Show answer'; });
+		}
+
+		toggleAll && toggleAll.addEventListener('click', function(){
+			var anyHidden = Array.from(document.querySelectorAll('.answer')).some(a => a.style.display !== 'block');
+			setAll(anyHidden);
+		});
+		showAll && showAll.addEventListener('click', function(){ setAll(true); });
+		hideAll && hideAll.addEventListener('click', function(){ setAll(false); });
+	</script>
+</body>
+</html>
+*** End Patch
