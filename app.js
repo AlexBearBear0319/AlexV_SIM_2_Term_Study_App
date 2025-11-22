@@ -14,6 +14,7 @@ let currentQuestionIndex = 0;
 let currentScore = 0;
 let answeredQuestions = new Set(); // Track answered questions
 let userAnswers = []; // Store user's answers for review
+let shuffledOptionOrder = []; // per-question shuffled option index order
 
 /* ==========================================================================
    NAVIGATION & RENDERING FUNCTIONS
@@ -335,6 +336,12 @@ function startQuiz(subject, type) {
     } else {
         currentQuiz = shuffleArray(allQuestions);
     }
+
+    // Prepare per-question shuffled option order (store original option indices)
+    shuffledOptionOrder = currentQuiz.map(q => {
+        const indices = q.options.map((_, i) => i);
+        return shuffleArray(indices);
+    });
     
     currentQuestionIndex = 0;
     currentScore = 0;
@@ -378,17 +385,16 @@ function renderQuestion() {
                     <div class="circle-text"><span class="marks-number">${marksSoFar}</span><span class="slash">/</span><span class="out-of">50</span></div>
                 </div>
                 <div class="q-text">${q.q}</div>
-                
+
                 <div class="q-options" id="options-container">
-                    ${q.options.map((opt, i) => `
-                        <label class="option-label" id="opt-${i}" 
-                            ${isAnswered && i === q.a ? 'class="correct-answer"' : ''}
-                            ${isAnswered && userAnswer === i && i !== q.a ? 'class="wrong-answer"' : ''}>
-                            <input type="radio" name="quizOption" value="${i}" 
-                                ${userAnswer === i ? 'checked' : ''}
-                                ${isAnswered ? 'disabled' : ''}> ${opt}
-                        </label>
-                    `).join('')}
+                    ${(() => {
+                        const order = shuffledOptionOrder[currentQuestionIndex] || q.options.map((_,i)=>i);
+                        return order.map(origIdx => `
+                            <label class="option-label ${isAnswered && origIdx === q.a ? 'correct-answer' : ''} ${isAnswered && userAnswer === origIdx && origIdx !== q.a ? 'wrong-answer' : ''}" id="opt-${origIdx}">
+                                <input type="radio" name="quizOption" value="${origIdx}" ${userAnswer === origIdx ? 'checked' : ''} ${isAnswered ? 'disabled' : ''}> ${escapeHtml(q.options[origIdx])}
+                            </label>
+                        `).join('');
+                    })()}
                 </div>
 
                 <div id="explanation" class="explanation-box" style="display: ${isAnswered ? 'block' : 'none'};">
