@@ -368,7 +368,15 @@ function renderQuestion() {
         <div class="quiz-wrapper">
             <div class="question-card">
                 <span class="q-number">Question ${questionNumber} of ${currentQuiz.length}</span>
-                <div style="font-size:0.9rem; color:var(--text-light); margin-top:6px;">Marks so far: <b>${marksSoFar} / 50</b></div>
+                <div class="marks-circle" role="status" aria-live="polite" title="Marks so far">
+                    <svg viewBox="0 0 36 36" class="circular-chart" aria-hidden="true">
+                        <circle class="circle-bg" cx="18" cy="18" r="16" fill="none"></circle>
+                        <circle class="circle" cx="18" cy="18" r="16" fill="none"
+                            stroke-dasharray="100"
+                            stroke-dashoffset="${Math.round(100 - (marksSoFar/50)*100)}"></circle>
+                    </svg>
+                    <div class="circle-text"><span class="marks-number">${marksSoFar}</span><span class="slash">/</span><span class="out-of">50</span></div>
+                </div>
                 <div class="q-text">${q.q}</div>
                 
                 <div class="q-options" id="options-container">

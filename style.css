@@ -399,6 +399,62 @@
         position: relative;
     }
 
+    /* Circular marks indicator (top-right of question card) */
+    .marks-circle {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .marks-circle .circular-chart {
+        width: 64px;
+        height: 64px;
+        transform: rotate(-90deg);
+        display: block;
+    }
+
+    .marks-circle .circle-bg {
+        stroke: #f0f0f0;
+        stroke-width: 3.8;
+    }
+
+    .marks-circle .circle {
+        stroke: var(--success);
+        stroke-width: 3.8;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .marks-circle .circle-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 4px;
+        font-size: 0.85rem;
+        color: var(--primary-dark);
+        font-weight: 700;
+        pointer-events: none;
+    }
+
+    .marks-number { font-size: 1rem; }
+    .out-of { font-size: 0.75rem; color: var(--text-light); font-weight: 600; }
+
+    @media (max-width: 480px) {
+        .marks-circle { width: 52px; height: 52px; top: 10px; right: 10px; }
+        .marks-circle .circular-chart { width: 52px; height: 52px; }
+        .marks-number { font-size: 0.95rem; }
+        .out-of { font-size: 0.7rem; }
+    }
+
     .q-number {
         font-size: 0.85rem;
         font-weight: bold;
