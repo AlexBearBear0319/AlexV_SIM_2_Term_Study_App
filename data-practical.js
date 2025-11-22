@@ -333,6 +333,32 @@ class Cylinder:
     def get_volume(self):
         # Volume = π * r^2 * h
         return math.pi * (self._radius ** 2) * self.height`
+        },
+        {
+            title: "Task 5: Vault Inheritance (People System)",
+            desc: "Implement the Vault PDF hierarchy: `People` (name, dob, gender) -> `Staff` (id, position, office) -> `AcademicStaff` (research, subject). Use `super()` correctly.",
+            code: `class People:
+    def __init__(self, name, dob, gender):
+        self.name = name
+        self.dob = dob
+        self.gender = gender
+
+class Staff(People):
+    def __init__(self, name, dob, gender, staff_id, position, office):
+        super().__init__(name, dob, gender)
+        self.staff_id = staff_id
+        self.position = position
+        self.office = office
+
+class AcademicStaff(Staff):
+    def __init__(self, name, dob, gender, staff_id, position, office, research, subject):
+        super().__init__(name, dob, gender, staff_id, position, office)
+        self.research = research
+        self.subject = subject
+
+# Test
+a = AcademicStaff("John", "1981-1-1", "M", "101", "Lecturer", "3.01", "AI", "CSIT121")
+print(f"{a.name}, {a.position}, {a.subject}")`
         }
     ],
 

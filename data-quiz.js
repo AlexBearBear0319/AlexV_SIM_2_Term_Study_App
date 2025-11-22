@@ -597,6 +597,37 @@ const quizData = {
             options: ["User-friendly output", "Developer debugging output", "String concatenation", "Equality check"], 
             a: 1, 
             explain: "`__str__` is for users; `__repr__` is for developers (unambiguous representation)." 
+        },
+        // ===== QUESTIONS FROM CSIT121 VAULT PDF =====
+        { 
+            q: "Which UML relationship indicates a general relationship between two classes (Uses-A)?", 
+            options: ["Composition", "Aggregation", "Association", "Inheritance"], 
+            a: 2, 
+            explain: "Association represents a general relationship where classes interact but don't strictly 'own' each other." 
+        },
+        { 
+            q: "Which of these is traditionally considered a compiled language?", 
+            options: ["Python", "JavaScript", "PHP", "Java"], 
+            a: 3, 
+            explain: "Java is a statically typed, compiled language (compiles to bytecode), whereas Python/JS are interpreted." 
+        },
+        { 
+            q: "Which statement is the BEST option to import only 'Car' and 'Bus' classes from a 'database' module?", 
+            options: ["import database", "from database import *", "from database import Car, Bus", "import database.Car, database.Bus"], 
+            a: 2, 
+            explain: "Explicitly importing specific classes ('from module import A, B') is preferred over '*' (pollutes namespace) or importing the whole module." 
+        },
+        { 
+            q: "In the class definition 'class Staff(People):', what is 'People'?", 
+            options: ["The Subclass", "The Superclass (Parent)", "The Instance", "The Module"], 
+            a: 1, 
+            explain: "The class inside the parentheses is the Parent class (Superclass) being inherited from." 
+        },
+        { 
+            q: "If you are in 'payments/square.py', how do you use a relative import to access 'database.py' in the parent folder?", 
+            options: ["import database", "from .. import database", "from . import database", "from ... import database"], 
+            a: 1, 
+            explain: "Two dots (..) move up one level in the package hierarchy to the parent directory." 
         }
     ],
 
