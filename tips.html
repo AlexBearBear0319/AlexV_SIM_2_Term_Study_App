@@ -45,6 +45,108 @@
 			</ul>
 		</section>
 
+			<!-- Lab4.py example: CSIT121 OODP practice -->
+			<article class="qa" id="lab4">
+				<h3>Lab4 — TestResult class (file handling & validation)</h3>
+				<div class="prompt">
+					<p>This example shows a small <code>TestResult</code> class that reads marks from a file, validates them, updates scores, and writes a retest list. Use this to study file IO, exception handling and basic aggregation.</p>
+					<pre><code>class TestResultException(Exception):
+		pass
+
+	class TestResult():
+		__error_filename = 'error.txt'
+		__retest_filename = 'retest.txt'
+    
+		def __init__(self):
+			self.__scores = {} # create the list to store the scores
+        
+		def load(self, filename):
+			with open(filename, 'r') as infile, open(TestResult.__error_filename, 'w') as errfile:
+            
+				self.__name = infile.readline().strip()
+				print(self.__name)
+            
+				for data_line in infile:
+					try:
+						# in order to divide/split the words/seperator
+						values = data_line.strip().split(',')
+						mark = int(values[1])
+						# check for valid mark
+						if mark < 0 or mark > 100:
+							err_mesg = f'{mark} is not within 0 ~ 100'
+							raise TestResultException(err_mesg)
+                    
+						# Add to self.__score
+						canID = values[0]
+						# get all the marks from every each candidate 
+						self.__scores[canID] = mark
+                    
+					except (ValueError, TestResultException) as err:
+						mesg = f'{data_line.strip()} {err}'
+						print(mesg)
+						print(mesg, file=errfile)
+                    
+		def update_score(self, canID, mark):
+			if canID in self.__scores.keys():
+				if mark < 0 or mark > 100:
+					raise TestResultException(f'{mark} must be 0 ~ 100')
+            
+				self.__scores[canID] = mark
+    
+		def get_basic_stats(self):
+			# put scores info all into the list
+			all_scores = list(self.__scores.values())
+        
+			lowest = min(all_scores)
+			highest = max(all_scores)
+			average = sum(all_scores)/len(all_scores)
+        
+			return f'Lowest: {lowest} Highest: {highest} Average: {average:.2f}'
+    
+		def get_retest_list(self):
+			with open(TestResult.__retest_filename, 'w') as retestfile:
+				for canID, mark in self.__scores.items():
+					if mark < 50:
+						print(f'({canID}, {mark})', file=retestfile)
+						print(f'({canID}, {mark})')
+    
+		def __str__ (self):
+			count = 0
+			for mark in self.__scores.values():
+				if mark >= 50:
+					count += 1
+			return f'{self.__name} {count}'
+        
+	def main():
+		result = TestResult()
+		# load the data from the source file, pass to function
+		result.load('lab4.txt')
+		print(result)
+		result.get_retest_list()
+		print(result.get_basic_stats())
+		try:
+			result.update_score('c1', 200)
+		except TestResultException as err:
+			print(err)
+    
+	main()</code></pre>
+				</div>
+				<button class="show-answer-btn show-btn">Show explanation</button>
+				<div class="answer">
+					<b>Explanation & study notes:</b>
+					<ul>
+						<li><b>Purpose:</b> Reads a test name (first line) and subsequent candidate lines <code>id,mark</code>. Validates marks and accumulates them in <code>self.__scores</code>.</li>
+						<li><b>File IO:</b> Uses a context manager to open both the input file and an error log; malformed lines or invalid marks are recorded into <code>error.txt</code>.</li>
+						<li><b>Validation:</b> Marks are checked to be integers in 0–100; invalid entries raise <code>TestResultException</code> (or are caught and logged).</li>
+						<li><b>Update:</b> <code>update_score()</code> updates an existing candidate and re-validates the new mark.</li>
+						<li><b>Retest list:</b> <code>get_retest_list()</code> writes candidates scoring &lt;50 to <code>retest.txt</code> and prints them; use this to produce a list for re-exams.</li>
+						<li><b>Edge cases:</b> The code assumes each data line contains at least two comma-separated items; in production you'd add more checks (empty lines, missing values).</li>
+						<li><b>How to run:</b> Place a sample <code>lab4.txt</code> in the same folder with first line the test name and next lines like <code>c1,78</code>. Execute the script with Python.</li>
+						<li><b>Study tip:</b> Trace the code for one malformed line to see how it is handled: it prints the error and continues — good defensive programming.</li>
+					</ul>
+				</div>
+			</article>
+
 		<section aria-labelledby="friend-heading" style="margin-top:18px">
 			<h2 id="friend-heading">Friend's tip — "Try to follow the exam format"</h2>
 			<p>Below are four example question types your friend described, with model answers in the exact formats markers expect.</p>
